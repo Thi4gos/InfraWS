@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import ModalComp from './components/ModalComp';
 import TopComp from './components/TopComp';
 import SidebarComp from './components/SideBarComp';
 import TaskComp from './components/TaksComp';
-import LoginModalComp from './components/LoginModalComp';
 
 interface Task {
   id: number;
@@ -22,8 +22,11 @@ function App() {
   const [templateTitle, setTemplateTitle] = useState('');
   const [templateDescription, setTemplateDescription] = useState('');
 
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isSidebarHidden, setIsSidebarHidden] = useState(false);
 
+  const handleShowSidebar = () => {
+    setIsSidebarHidden(false);
+  };  
 
   const handleAddTask = () => {
     if (!newTitle.trim()) return; // EVITA ADICIONAR TAREFA SEM TÍTULO
@@ -51,9 +54,19 @@ function App() {
 
   return (
     <div className="flex">
-      <SidebarComp />
+       {!isSidebarHidden && (
+        <SidebarComp onShowSidebar={() => setIsSidebarHidden(false)} />
+      )}
       <div className="flex-1">
         <TopComp />
+        {isSidebarHidden && (
+          <button
+            onClick={handleShowSidebar}
+            className="bg-gray-800 text-white px-4 py-2 rounded m-4"
+          >
+            <FontAwesomeIcon icon={faBars} /> Mostrar Menu
+          </button>
+        )}
         <div className="p-4">
 
           <button
@@ -62,24 +75,7 @@ function App() {
           >
             <FontAwesomeIcon icon={faPlus} />
           </button>
-          <button
-            onClick={() => setIsLoginModalOpen(true)}
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-          >
-            Abrir Login
-          </button>
-
-          {/* <div className="mt-4">
-            {tasks.map((task) => (
-              <TaskComp
-                key={task.id}
-                id={task.id}
-                title={task.title}
-                description={task.description}
-                onEdit={handleEditTask}
-              />
-            ))}
-          </div> */}
+          
           <div className="mt-4">
             {tasks.map((task) => (
             <TaskComp
@@ -120,11 +116,6 @@ function App() {
               Salvar
             </button>
           </ModalComp>
-
-          <LoginModalComp
-            isOpen={isLoginModalOpen}
-            onClose={() => setIsLoginModalOpen(false)}
-          />
         </div>
       </div>
     </div>

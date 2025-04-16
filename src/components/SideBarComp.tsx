@@ -2,54 +2,56 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 
-const SidebarComp: React.FC = () => {
+interface SidebarCompProps {
+  onShowSidebar: () => void;
+}
+
+const SidebarComp: React.FC<SidebarCompProps> = ({ onShowSidebar }) => {
   const [isHidden, setIsHidden] = useState(false);
 
   const toggleSidebar = () => {
     setIsHidden(!isHidden);
   };
 
+  if (isHidden) {
+    // Retorna apenas o botão na barra superior quando o menu está oculto
+    return null;
+  }
+
   return (
-    <div className="flex">
-      {/* Botão para ocultar/exibir o menu */}
+    <aside className="w-64 h-screen bg-gray-800 text-white p-4 relative">
       <button
         onClick={toggleSidebar}
-        className="bg-blue-600 text-white p-4 h-15"
+        className="absolute top-2 right-2 bg-gray-700 text-white p-2 rounded"
       >
-        {isHidden ? <FontAwesomeIcon icon={faBars} /> : <FontAwesomeIcon icon={faBars} />}
+        Ocultar
       </button>
-
-      {/* Sidebar */}
-      {!isHidden && (
-        <aside className="w-64 h-screen bg-gray-800 text-white p-4">
-          <h2 className="text-lg font-bold mb-4">Menu</h2>
-          <nav>
-            <ul className="space-y-2">
-              <li>
-                <a href="#" className="block p-2 rounded hover:bg-gray-700">
-                  Dashboard
-                </a>
-              </li>
-              <li>
-                <a href="#" className="block p-2 rounded hover:bg-gray-700">
-                  Minhas Notas
-                </a>
-              </li>
-              <li>
-                <a href="#" className="block p-2 rounded hover:bg-gray-700">
-                  Configurações
-                </a>
-              </li>
-              <li>
-                <a href="#" className="block p-2 rounded hover:bg-gray-700">
-                  Sair
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </aside>
-      )}
-    </div>
+      <h2 className="text-lg font-bold mb-4">Menu</h2>
+      <nav>
+        <ul className="space-y-2">
+          <li>
+            <a href="#" className="block p-2 rounded hover:bg-gray-700">
+              Dashboard
+            </a>
+          </li>
+          <li>
+            <a href="#" className="block p-2 rounded hover:bg-gray-700">
+              Minhas Notas
+            </a>
+          </li>
+          <li>
+            <a href="#" className="block p-2 rounded hover:bg-gray-700">
+              Configurações
+            </a>
+          </li>
+          <li>
+            <a href="#" className="block p-2 rounded hover:bg-gray-700">
+              Sair
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
   );
 };
 

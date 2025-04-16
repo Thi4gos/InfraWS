@@ -1,6 +1,13 @@
 import React from 'react';
+import { useState } from 'react';
+import LoginModalComp from './LoginModalComp';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 const TopComp: React.FC = () => {
+  
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
   return (
     <header className="bg-blue-600 text-white p-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
@@ -22,9 +29,21 @@ const TopComp: React.FC = () => {
                 Contato
               </a>
             </li>
+            <li>
+              <button
+                onClick={() => setIsLoginModalOpen(true)}
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+                >
+                <FontAwesomeIcon icon={faUser} />
+              </button>
+            </li>
           </ul>
         </nav>
       </div>
+      <LoginModalComp
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+      />
     </header>
   );
 };
