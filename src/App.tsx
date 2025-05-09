@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import ModalComp from './components/ModalComp';
+import ModalComp from './components/Modals/ModalComp';
 import TopComp from './components/TopComp';
 import SidebarComp from './components/SideBarComp';
 import TaskComp from './components/TaksComp';
@@ -24,6 +24,14 @@ function App() {
 
   const [isSidebarHidden, setIsSidebarHidden] = useState(false);
 
+
+  const handleEditTask = (id: number, updatedTitle: string, updatedDescription: string) => {
+    const updatedTasks = tasks.map((task) =>
+      task.id === id ? { ...task, title: updatedTitle, description: updatedDescription } : task
+    );
+    setTasks(updatedTasks);
+  };
+
   const handleShowSidebar = () => {
     setIsSidebarHidden(false);
   };  
@@ -44,21 +52,17 @@ function App() {
     setNewDescription('');
   };
   
-  const handleEditTask = (id: number, updatedTitle: string, updatedDescription: string) => {
-    const updatedTasks = tasks.map((task) =>
-      task.id === id ? { ...task, title: updatedTitle, description: updatedDescription } : task
-    );
-    setTasks(updatedTasks);
-  };
-  
 
   return (
     <div className="flex">
-       {!isSidebarHidden && (
+
+      {!isSidebarHidden && (
         <SidebarComp onShowSidebar={() => setIsSidebarHidden(false)} />
       )}
+
       <div className="flex-1">
         <TopComp />
+
         {isSidebarHidden && (
           <button
             onClick={handleShowSidebar}
@@ -67,11 +71,12 @@ function App() {
             <FontAwesomeIcon icon={faBars} /> Mostrar Menu
           </button>
         )}
+
         <div className="p-4">
 
           <button
             onClick={() => setIsModalOpen(true)}
-            className="bg-purple-500 text-white px-4 py-2 rounded"
+            className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-700 onClick:scale-105 transition-transform duration-300"
           >
             <FontAwesomeIcon icon={faPlus} />
           </button>
@@ -79,44 +84,46 @@ function App() {
           <div className="mt-4">
             {tasks.map((task) => (
             <TaskComp
-              key={task.id}
+              key={task.id}       //FAZER RENDERIZAÇÃO POR REQUISIÇÃO
               id={task.id}
               title={task.title}
               description={task.description}
               onEdit={handleEditTask}
-          />
+              />
             ))}
           </div>
-          <ModalComp isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-            <h2 className="text-xl font-bold mb-2 text-black">Novo Template</h2>
-            <input
-              type="text"
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-              placeholder="Título da tarefa"
-              className="border px-2 py-1 mr-2"
-            />
-            <textarea
-              placeholder="Descrição"
-              value={newDescription}
-              onChange={(e) => setNewDescription(e.target.value)}
-              className="border px-2 py-1 mr-2"
-            />
-            <button
-              onClick={() => {
-                // AQUI TU PODE CRIAR UM NOVO TEMPLATE OU COMPONENTE USANDO OS DADOS
-                handleAddTask();
-                console.log('Novo template criado:', templateTitle, templateDescription);
-                setIsModalOpen(false);
-                setTemplateTitle('');
-                setTemplateDescription('');
-              }}
-              className="bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              Salvar
-            </button>
-          </ModalComp>
+
         </div>
+
+        <ModalComp isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <h2 className="text-xl font-bold mb-2 text-black">Novo Template</h2>
+          <input
+            type="text"
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
+            placeholder="Título da tarefa"
+            className="border px-2 py-1 mr-2 rounded"
+          />
+          <textarea
+            placeholder="Descrição"
+            value={newDescription}
+            onChange={(e) => setNewDescription(e.target.value)}
+            className="border px-2 py-1 mr-2 rounded"
+          />
+          <button
+            onClick={() => {
+              // AQUI TU PODE CRIAR UM NOVO TEMPLATE OU COMPONENTE USANDO OS DADOS
+              handleAddTask();
+              setIsModalOpen(false); //FAZER FUNÇÃO DE GRAVAÇÃO DO OBJETO
+              setTemplateTitle('');
+              setTemplateDescription('');
+            }}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 transition-transform duration-300"
+          >
+            Salvar
+          </button>
+        </ModalComp>
+
       </div>
     </div>
   );

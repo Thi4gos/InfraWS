@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import LoginModalComp from './LoginModalComp';
+import LoginModalComp from './Modals/LoginModalComp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 
