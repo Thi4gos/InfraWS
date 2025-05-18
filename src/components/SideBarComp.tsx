@@ -1,31 +1,9 @@
-import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import React from 'react';
 
-interface SidebarCompProps {
-  onShowSidebar: () => void;
-}
-
-const SidebarComp: React.FC<SidebarCompProps> = ({ onShowSidebar }) => {
-  const [isHidden, setIsHidden] = useState(false);
-
-  const toggleSidebar = () => {
-    setIsHidden(!isHidden);
-  };
-
-  if (isHidden) {
-    // Retorna apenas o botão na barra superior quando o menu está oculto
-    return null;
-  }
-
+const SidebarComp = () => {
+  
   return (
-    <aside className="w-64 h-screen bg-gray-800 text-white p-4 relative">
-      <button
-        onClick={toggleSidebar}
-        className="absolute top-2 right-2 bg-gray-700 text-white p-2 rounded"
-      >
-        Ocultar
-      </button>
+    <aside className="w-64 h-screen bg-gray-800 text-white p-4 relative ">
       <h2 className="text-lg font-bold mb-4">Menu</h2>
       <nav>
         <ul className="space-y-2">

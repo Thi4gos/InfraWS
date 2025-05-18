@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import ModalComp from './components/Modals/ModalComp';
+import ModalComp from './Modals/ModalComp';
 import TopComp from './components/TopComp';
 import SidebarComp from './components/SideBarComp';
 import TaskComp from './components/TaksComp';
@@ -15,15 +14,9 @@ interface Task {
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [newTitle, setNewTitle] = useState('');
-  const [newDescription, setNewDescription] = useState('');
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [templateTitle, setTemplateTitle] = useState('');
   const [templateDescription, setTemplateDescription] = useState('');
-
-  const [isSidebarHidden, setIsSidebarHidden] = useState(false);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleEditTask = (id: number, updatedTitle: string, updatedDescription: string) => {
     const updatedTasks = tasks.map((task) =>
@@ -32,98 +25,76 @@ function App() {
     setTasks(updatedTasks);
   };
 
-  const handleShowSidebar = () => {
-    setIsSidebarHidden(false);
-  };  
-
   const handleAddTask = () => {
-    if (!newTitle.trim()) return; // EVITA ADICIONAR TAREFA SEM TÍTULO
-  
+    if (!templateTitle.trim()) return;
+
     const newTask: Task = {
       id: tasks.length + 1,
-      title: newTitle,
-      description: newDescription,
+      title: templateTitle,
+      description: templateDescription,
     };
-  
+
     setTasks([...tasks, newTask]);
-  
-    // LIMPA OS CAMPOS
-    setNewTitle('');
-    setNewDescription('');
+
+    // LIMPA CAMPOS
+    setTemplateTitle('');
+    setTemplateDescription('');
   };
-  
 
   return (
     <div className="flex">
-
-      {!isSidebarHidden && (
-        <SidebarComp onShowSidebar={() => setIsSidebarHidden(false)} />
-      )}
-
       <div className="flex-1">
         <TopComp />
-
-        {isSidebarHidden && (
-          <button
-            onClick={handleShowSidebar}
-            className="bg-gray-800 text-white px-4 py-2 rounded m-4"
-          >
-            <FontAwesomeIcon icon={faBars} /> Mostrar Menu
-          </button>
-        )}
+        <SidebarComp />
 
         <div className="p-4">
-
           <button
             onClick={() => setIsModalOpen(true)}
-            className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-700 onClick:scale-105 transition-transform duration-300"
+            className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-700 active:scale-105 transition-transform duration-300"
           >
             <FontAwesomeIcon icon={faPlus} />
           </button>
-          
+
           <div className="mt-4">
             {tasks.map((task) => (
-            <TaskComp
-              key={task.id}       //FAZER RENDERIZAÇÃO POR REQUISIÇÃO
-              id={task.id}
-              title={task.title}
-              description={task.description}
-              onEdit={handleEditTask}
+              <TaskComp
+                key={task.id}
+                id={task.id}
+                title={task.title}
+                description={task.description}
+                onEdit={handleEditTask}
               />
             ))}
           </div>
-
         </div>
 
         <ModalComp isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-          <h2 className="text-xl font-bold mb-2 text-black">Novo Template</h2>
-          <input
-            type="text"
-            value={newTitle}
-            onChange={(e) => setNewTitle(e.target.value)}
-            placeholder="Título da tarefa"
-            className="border px-2 py-1 mr-2 rounded"
-          />
-          <textarea
-            placeholder="Descrição"
-            value={newDescription}
-            onChange={(e) => setNewDescription(e.target.value)}
-            className="border px-2 py-1 mr-2 rounded"
-          />
-          <button
-            onClick={() => {
-              // AQUI TU PODE CRIAR UM NOVO TEMPLATE OU COMPONENTE USANDO OS DADOS
-              handleAddTask();
-              setIsModalOpen(false); //FAZER FUNÇÃO DE GRAVAÇÃO DO OBJETO
-              setTemplateTitle('');
-              setTemplateDescription('');
-            }}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 transition-transform duration-300"
-          >
-            Salvar
-          </button>
+          <div className="p-4 flex flex-col gap-4 text-black">
+            <h2 className="text-2xl font-semibold text-center">Novo Template</h2>
+            <input
+              type="text"
+              value={templateTitle}
+              onChange={(e) => setTemplateTitle(e.target.value)}
+              placeholder="Título da tarefa"
+              className="border border-gray-300 px-3 py-2 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+            <textarea
+              placeholder="Descrição"
+              value={templateDescription}
+              onChange={(e) => setTemplateDescription(e.target.value)}
+              className="border border-gray-300 px-3 py-2 rounded w-full h-24 resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+            <button
+              onClick={() => {
+                handleAddTask();
+                setIsModalOpen(false);
+              }}
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+            >
+              Salvar
+            </button>
+          </div>
         </ModalComp>
-
       </div>
     </div>
   );
