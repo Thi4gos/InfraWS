@@ -5,9 +5,10 @@ interface TaskProps {
   title: string;
   description: string;
   onEdit: (id: number, title: string, description: string) => void;
+  onDelete: (id: number) => void;
 }
 
-const TaskComp: React.FC<TaskProps> = ({ id, title, description, onEdit }) => {
+const TaskComp: React.FC<TaskProps> = ({ id, title, description, onEdit, onDelete }) => {
   const [isCompleted, setIsCompleted] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(title);
@@ -82,6 +83,13 @@ const TaskComp: React.FC<TaskProps> = ({ id, title, description, onEdit }) => {
               className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 transition"
             >
               Editar
+            </button>
+            
+            <button
+              onClick={() => onDelete(id)}
+              className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+            >
+              Excluir
             </button>
           </div>
         </>
