@@ -3,6 +3,7 @@ import App from "./App";
 // import { AuthProvider } from "react-oidc-context";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { AuthProvider } from "react-oidc-context";
 import './index.css'; // ou './main.css', dependendo de como você nomeou
 
 const cognitoAuthConfig = {
@@ -15,8 +16,8 @@ const cognitoAuthConfig = {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {/* <AuthProvider {...cognitoAuthConfig}> */}
+     <AuthProvider {...cognitoAuthConfig}>
       <App />
-    {/* </AuthProvider> */}
+    </AuthProvider> 
   </StrictMode>,
 )

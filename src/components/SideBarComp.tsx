@@ -1,6 +1,10 @@
 import React from 'react';
 
-const SidebarComp = () => {
+interface SideBarModalProps {
+  onSignOut?: () => void;
+}
+
+const SidebarComp: React.FC<SideBarModalProps> = ({ onSignOut }) => {
   
   return (
     <aside className="w-64 h-screen bg-gray-800 text-white p-4 relative ">
@@ -21,12 +25,12 @@ const SidebarComp = () => {
             <a href="#" className="block p-2 rounded hover:bg-gray-700">
               Configurações
             </a>
-          </li>
+          </li>   
           <li>
-            <a href="#" className="block p-2 rounded hover:bg-gray-700">
-              Sair
-            </a>
-          </li>
+          <a href="#" className="block p-2 rounded hover:bg-gray-700">
+            Sair
+          </a>
+        </li>     
         </ul>
       </nav>
     </aside>

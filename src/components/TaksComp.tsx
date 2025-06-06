@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
 interface TaskProps {
-  id: number;
+  id: string;
   title: string;
   description: string;
-  onEdit: (id: number, title: string, description: string) => void;
-  onDelete: (id: number) => void;
+  onEdit: (id: string, title: string, description: string) => void;
+  onDelete: (id: string) => void;
 }
 
 const TaskComp: React.FC<TaskProps> = ({ id, title, description, onEdit, onDelete }) => {
